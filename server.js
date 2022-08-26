@@ -5,16 +5,24 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
-const users = []
+const users = [];
+const tweets = [];
 
 
 server.post("/sign-up", (req, res) => {
   const newUser = req.body
   users.push(newUser)
   res.send(newUser)
-  console.log(newUser)
+  console.log("OK")
 })
 
+server.get("/tweets", (req, res) => {
+  const lastTweets = []
+  for(let i = tweets.length-1; i>tweets.length-10; i--){
+    if(tweets[i]) lastTweets.push(tweets[i])
+  }
+  res.send(lastTweets)
+})
 
 
 server.listen(5000, function(){
