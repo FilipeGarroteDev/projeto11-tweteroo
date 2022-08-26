@@ -24,6 +24,18 @@ server.get("/tweets", (req, res) => {
   res.send(lastTweets)
 })
 
+server.post("/tweets", (req, res) => {
+  const profilePhoto = users.find(user => user.username === req.body.username)
+  const avatar = profilePhoto ? profilePhoto.avatar : ""
+  
+  const newTweet = {
+    ...req.body,
+    avatar,
+  }
+  tweets.push(newTweet)
+  res.send(newTweet)
+  console.log("OK")
+})
 
 server.listen(5000, function(){
   console.log("Listening to port 5000")
