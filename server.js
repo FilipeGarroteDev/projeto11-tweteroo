@@ -18,7 +18,7 @@ server.post("/sign-up", (req, res) => {
 
 server.get("/tweets", (req, res) => {
   const lastTweets = []
-  for(let i = tweets.length-1; i>tweets.length-10; i--){
+  for(let i = tweets.length-1; i>tweets.length-11; i--){
     if(tweets[i]) lastTweets.push(tweets[i])
   }
   res.send(lastTweets)
