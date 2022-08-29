@@ -56,12 +56,12 @@ server.get("/tweets", (req, res) => {
 })
 
 server.get("/tweets/:user", (req, res) => {
-  const lastUserTweets = []
+  const userTweets = []
   const params = req.params.user
-  for(let i = tweets.length-1; i>tweets.length-11; i--){
-    if(tweets[i] && tweets[i].username === params) lastUserTweets.push(tweets[i])
+  for(let i = tweets.length-1; i>=0; i--){
+    if(tweets[i] && tweets[i].username === params) userTweets.push(tweets[i])
   }
-  res.send(lastUserTweets)
+  res.send(userTweets)
 })
 
 server.post("/tweets", (req, res) => {
