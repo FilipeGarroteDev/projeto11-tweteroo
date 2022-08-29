@@ -50,11 +50,22 @@ server.get("/tweets", (req, res) => {
   res.send(lastTweets)
 })
 
+server.get("/tweets/:user", (req, res) => {
+  const lastUserTweets = []
+  const params = req.params.user
+  for(let i = tweets.length-1; i>tweets.length-11; i--){
+    if(tweets[i] && tweets[i].username === params) lastUserTweets.push(tweets[i])
+  }
+  res.send(lastUserTweets)
+})
+
 server.post("/tweets", (req, res) => {
-  const profilePhoto = users.find(user => user.username === req.body.username)
+  const profilePhoto = users.find(user => user.username === req.headers.user)
+  console.log(req.body)
   const avatar = profilePhoto ? profilePhoto.avatar : ""
   const newTweet = {
     ...req.body,
+    username: req.headers.user,
     avatar,
   }
 
