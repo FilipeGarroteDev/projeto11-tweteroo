@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus, no-console */
+
 import express from 'express';
 import cors from 'cors';
 
