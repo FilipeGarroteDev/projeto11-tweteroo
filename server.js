@@ -8,12 +8,38 @@ server.use(express.json());
 const users = [];
 const tweets = [];
 
+function validateUsername(username){
+  if (username === ""){
+    return false
+  }
+  return true 
+}
+
+function validateAvatar(avatar){
+  const regex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+
+  if (avatar === "" || !avatar.match(regex)){
+    return false
+  }
+  return true 
+}
+
+function validateTweet(tweet){
+  if (tweet === ""){
+    return false
+  }
+  return true 
+}
+
 
 server.post("/sign-up", (req, res) => {
   const newUser = req.body
+  if (!validateUsername(newUser.username) || !validateAvatar(newUser.avatar)){
+    res.status(400).send("Todos os campos são obrigatórios!\nPreencha-os no formato correto.")
+    return
+  }
   users.push(newUser)
-  res.send(newUser)
-  console.log("OK")
+  res.status(201).send("OK")
 })
 
 server.get("/tweets", (req, res) => {
@@ -27,14 +53,18 @@ server.get("/tweets", (req, res) => {
 server.post("/tweets", (req, res) => {
   const profilePhoto = users.find(user => user.username === req.body.username)
   const avatar = profilePhoto ? profilePhoto.avatar : ""
-  
   const newTweet = {
     ...req.body,
     avatar,
   }
+
+  if (!validateUsername(newTweet.username) || !validateTweet(newTweet.tweet)){
+    res.status(400).send("Todos os campos são obrigatórios!\nPreencha-os no formato correto.")
+    return
+  }
+
   tweets.push(newTweet)
-  res.send(newTweet)
-  console.log("OK")
+  res.status(201).send("OK")
 })
 
 server.listen(5000, function(){
