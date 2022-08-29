@@ -43,9 +43,14 @@ server.post("/sign-up", (req, res) => {
 })
 
 server.get("/tweets", (req, res) => {
+  const page = Number(req.query.page)
+  if(page < 1) return res.status(400).send("Informe uma página válida!")
+  const position = page*10+1
   const lastTweets = []
-  for(let i = tweets.length-1; i>tweets.length-11; i--){
-    if(tweets[i]) lastTweets.push(tweets[i])
+  if(page){
+    for(let i = tweets.length-(position - 10); i>tweets.length-position; i--){
+      if(tweets[i]) lastTweets.push(tweets[i])
+    }
   }
   res.send(lastTweets)
 })
